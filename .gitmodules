@@ -1,0 +1,3 @@
+[submodule "gql-udemy-course1"]
+	path = gql-udemy-course1
+	url = https://git.heroku.com/gql-udemy-course1.git
