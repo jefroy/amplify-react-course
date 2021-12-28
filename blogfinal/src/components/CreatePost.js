@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {listPosts} from "../graphql/queries";
-import {API, button, graphqlOperation} from "aws-amplify";
+import {API, graphqlOperation} from "aws-amplify";
+import {createPost} from "../graphql/mutations";
 
 class CreatePost extends Component {
 
@@ -16,35 +17,45 @@ class CreatePost extends Component {
         // todo tba
     }
 
-    getPosts = async () => {
-        const result = await API.graphql(
-            graphqlOperation(listPosts)
-        )
-        this.setState({posts: result.data.listPosts.items})
-        // console.log("all posts: ", JSON.stringify(result.data.listPosts.items))
-    }
-
     render(){
         return(
-            <form className={'add-post'} action=""
+            <form className={'add-post'}
+                  action=""
                   onSubmit={this.handleAddPost}
             >
-                <input style={{font: '19px'}} type="text" placeholder={'Title'} name={'postTitle'} required/>
-                <textarea name={'postBody'} rows={3} cols={40} required placeholder={'New Blog Post'} type="text"/>
+                <input placeholder={'Title'} name={'postTitle'}
+                       style={{font: '19px'}}
+                       type="text"
+                       required
+                       value={this.state.postTitle}
+                       onChange={this.handleChangePost}
+                />
+                <textarea placeholder={'New Blog Post'} name={'postBody'}
+                          rows={3}
+                          cols={40}
+                          required
+                          value={this.state.postBody}
+                          onChange={this.handleChangePost}
+                />
                 <input type="submit" className={'btn'} style={{fontSize: '19px'}}/>
             </form>
         )
     }
 
+    handleChangePost = event => this.setState({
+        [event.target.name] : event.target.value
+    })
     handleAddPost = async event => {
         event.preventDefault()
         const input = {
-            postOwnerId: this.postOwnerId,
-            postOwnerUsername: this.postOwnerUsername,
-            postTitle: this.postTitle,
-            postBody: this.postBody,
+            postOwnerId: 'testman123', // this.state.postOwnerId,
+            postOwnerUsername: 'testman', // this.state.postOwnerUsername,
+            postTitle: this.state.postTitle,
+            postBody: this.state.postBody,
             createdAt: new Date().toISOString(),
         }
+        await API.graphql(graphqlOperation(createPost, {input}))
+        this.setState({postTitle: '', postBody: ''})
     }
 }
 
