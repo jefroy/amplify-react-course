@@ -20,7 +20,7 @@ class EditPost extends Component {
 
     render(){
         return(
-            <button>Delete</button>
+            <button>Edit</button>
         )
     }
 }

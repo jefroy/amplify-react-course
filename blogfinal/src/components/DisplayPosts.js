@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {listPosts} from "../graphql/queries";
 import {API, graphqlOperation} from "aws-amplify";
 import DeletePost from "./DeletePost";
+import EditPost from "./EditPost";
 
 class DisplayPosts extends Component {
 
@@ -40,7 +41,7 @@ class DisplayPosts extends Component {
                     </p>
                     <br/>
                     <span>
-                        <DeletePost />
+                        <DeletePost /><EditPost />
                     </span>
                 </div>
             )
